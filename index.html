@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+    <body>
+       <div id="root"></div>
+    </body>
+    <script src="https://unpkg.com/react@17.0.2/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@17.0.2/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script type="text/babel">
+        function MinToHours() {
+            const [times, setTimes] = React.useState(0);
+            const [inverted, setInverted] = React.useState(false);
+            const onChange = (event) => {
+                setTimes(event.target.value);
+            };
+            const reset = () => setTimes(0);
+            const onInvert = () => {
+                reset();
+                setInverted((current) => !current);
+            };
+            return (
+                <div>
+                    <div>
+                        <label htmlfor="minutes">분</label>
+                        <input
+                            value={inverted ? times * 60 : times}
+                            id="minutes"
+                            placeholder="분 입력"
+                            type="number"
+                            onChange={onChange}
+                            disabled={inverted}
+                        />
+                    </div>
+                    <div>
+                        <label htmlfor="hours">시</label>
+                        <input
+                            value={inverted ? times : Math.round(times / 60)}
+                            id="hours"
+                            placeholder="시 입력"
+                            type="number"
+                            onChange={onChange}
+                            disabled={!inverted}
+                        />
+                    </div>
+                    <button onClick={reset}>리셋</button>
+                    <button onClick={onInvert}>{inverted ? "되돌리기" : "변환하기"}</button>
+                </div>
+            );
+        }
+        function CmToInch() {
+            const [values, setValues] = React.useState(0);
+            const [inverted, setInverted] = React.useState(false);
+            const onChange = (event) => {
+                setValues(event.target.value);
+            };
+            const reset = () => setValues(0);
+            const onInvert = () => {
+                reset();
+                setInverted((current) => !current);
+            };
+            return (
+                <div>
+                    <div>
+                        <label htmlfor="centimeter">센치미터</label>
+                        <input
+                            value={inverted ? values * 2.54 : values}
+                            id="centimeter"
+                            placeholder="센치미터 입력"
+                            type="number"
+                            onChange={onChange}
+                            disabled={inverted}
+                        />
+                    </div>
+                    <div>
+                        <label htmlfor="inch">인치</label>
+                        <input
+                            value={inverted ? values : Math.round(values / 2.54)}
+                            id="inch"
+                            placeholder="인치 입력"
+                            type="number"
+                            onChange={onChange}
+                            disabled={!inverted}
+                        />
+                    </div>
+                    <button onClick={reset}>리셋</button>
+                    <button onClick={onInvert}>{inverted ? "되돌리기" : "변환하기"}</button>
+                </div>
+            );
+        }
+        function App() {
+            const [index, setIndex] = React.useState("base");
+            const onSelect = (event) => {
+                setIndex(event.target.value);
+            };
+            return (
+                <div>
+                    <h1>변환기</h1>
+                    <select value={index} onChange={onSelect}>
+                        <option value="base">선택하세요</option>
+                        <option value="0">분 & 시</option>
+                        <option value="1">센치 & 인치</option>
+                    </select>
+                    <hr />
+                    {index === "base" ? "변환기를 선택하세요" : null}
+                    {index === "0" ? <MinToHours /> : null}
+                    {index === "1" ? <CmToInch /> : null}
+                </div>
+            )
+        }
+        const root = document.getElementById("root");
+        ReactDOM.render(<App />, root);
+    </script>
+</html>
